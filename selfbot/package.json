@@ -1,0 +1,17 @@
+{
+  "name": "selfbot",
+  "version": "1.0.0",
+  "description": "Selfbot for Discord made in Discord.js using Node.js",
+  "main": "selfbot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "discord"
+  ],
+  "author": "motasim, motasim#4036",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^11.0.0"
+  }
+}
