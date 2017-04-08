@@ -6,6 +6,7 @@ const fs = require('fs')
 bot.on('ready', (ready) => {
   console.log('Self bot is online! Prefix:' + config.prefix)
   console.log('Logged in as:' + bot.user.username + '#' + bot.user.discriminator)
+  console.log('Use:' + config.prefix + 'help')
 })
 
 bot.on('message', (message) => {
@@ -19,7 +20,7 @@ bot.on('message', (message) => {
       if(embed.length <= 1) return;
       const embedd = new Discord.RichEmbed()
       .setTitle(`${message.author.username}`)
-      .setColor('#42f4ce')
+      .setColor(config.embedcolor)
       .setDescription(embed)
       .addField('---------------------------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
       message.edit(message.channel.sendEmbed(embedd))
@@ -28,7 +29,7 @@ bot.on('message', (message) => {
         if(!message.guild) return;
         let n = message.guild.channels.map(r => r.name)
         const embed = new Discord.RichEmbed()
-        .setColor('#0021ff')
+        .setColor(config.embedcolor)
         .addField('Server name:', `**${message.guild.name}**`)
         .addField('Default Channel:', `${message.guild.defaultChannel} (#${message.guild.defaultChannel.name})`)
         .addField('Members:', `**${message.guild.memberCount}**`)
@@ -43,7 +44,7 @@ bot.on('message', (message) => {
         const embed = new Discord.RichEmbed()
         .setTitle('Servers')
         .setDescription(`I am now in ${bot.guilds.size} servers.`)
-        .setColor('#42f4ce')
+        .setColor(config.embedcolor)
         .addField('---------------------------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
         message.channel.sendEmbed(embed)
     } else {
@@ -71,6 +72,7 @@ bot.on('message', (message) => {
           if(message.content.startsWith(config.prefix + 'setnick')) {
             if(!message.member.hasPermission("CHANGE_NICKNAME")) return console.log(`You can not change your nickname on the server ${message.guild.name} because you do not have the right perms.`)
             var nickname = args.slice(1).join(' ');
+            if(nickname === 'null') return message.member.setNickname(null)
             message.member.setNickname(nickname);
             console.log(`Changed nickname on the server ${message.guild.name} to ${nickname}`)
             message.delete().catch(console.error);
@@ -85,11 +87,12 @@ bot.on('message', (message) => {
               message.reply(`I have kicked ${mention} successfully and I have deleted his/her messages in the last 7 days.`)
               const d = new Discord.RichEmbed()
               .setTitle('Kick')
+              .setColor('#ff0000')
               .setDescription('You are kicked from the server ' + "`${message.guild.name}`")
               .addField('Modrator:', `${message.author.username}#${message.author.discriminator}`)
               .addField('Reason:', reason)
               message.guild.member(mention).sendEmbed(d)
-              bot.setInterval(() => message.guild.member(mention).kick(7), 1000);
+              message.guild.member(mention).kick(7)
             } else {
               if(message.content.startsWith(config.prefix + 'ban')) {
                 if(!message.member.hasPermission("BAN_MEMBERS")) return;
@@ -98,11 +101,34 @@ bot.on('message', (message) => {
                 message.reply(`I have banned ${mention} successfully and I have deleted his/her messages in the last 7 days.`)
                 const d = new Discord.RichEmbed()
                 .setTitle('Ban')
+                .setColor('#ff0000')
                 .setDescription('You are banned from the server ' + '`${message.guild.name}`')
                 .addField('Modrator:', `${message.author.username}#${message.author.discriminator}`)
                 .addField('Reason:', reason)
                 message.guild.member(mention).sendEmbed(d)
-                bot.setInterval(() => message.guild.member(mention).ban(7), 1000);
+                message.guild.member(mention).ban(7)
+            } else {
+              var memes = ['https://cdn.discordapp.com/attachments/282816188294365194/299963082015244289/images.png'] // Post your memes between the []. Example: ['https://meme.io']
+              if(message.content === config.prefix + 'meme') {
+                message.channel.sendMessage(memes[Math.floor(Math.random() * memes.length)])
+          } else {
+            if(message.content === config.prefix + 'help') {
+              const embed = new Discord.RichEmbed()
+              .setTitle('Selfbot Help')
+              .setColor(config.embedcolor)
+              .addField(config.prefix + 'ping', 'Returns "pong".')
+              .addField(config.prefix + 'embed', 'Puts your text in an embed.')
+              .addField(config.prefix + 'serverinfo', 'Shows the serverinfo.')
+              .addField(config.prefix + 'setgame', 'Sets your playing game.')
+              .addField(config.prefix + 'setprefix', 'Sets your new prefix.')
+              .addField(config.prefix + 'servers', 'Shows in how many servers you are in.')
+              .addField(config.prefix + 'setnick', 'Sets your new nickname for the server.')
+              .addField(config.prefix + 'meme', 'Post a random meme.')
+              .addField(config.prefix + 'prune', 'Deletes message that were sent by you.')
+              .addField(config.prefix + 'kick', 'Kicks the mentioned user.')
+              .addField(config.prefix + 'ban', 'Bans the mentioned user.')
+              .addField('---------------------------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
+              message.channel.sendEmbed(embed)
             }
           }
         }
@@ -110,6 +136,8 @@ bot.on('message', (message) => {
       }
     }
   }
+}
+}
 }
 }
 }

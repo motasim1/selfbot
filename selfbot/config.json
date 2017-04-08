@@ -1,5 +1,6 @@
 {
-  "ownerID" : "Insert your USER ID here",
+  "ownerID" : "Your User ID here.",
   "prefix" : "!",
-  "token" : "Enter your token here."
+  "token" : "Your token here.",
+  "embedcolor" : "#00ffdd . **You can get a new color when searching on Google: html color picker**"
 }
