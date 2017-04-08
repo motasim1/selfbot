@@ -11,6 +11,6 @@ discord.js installed in the folder
 
 ---
 
-If you have all requirements, hop over to the config.json file. When you are there, replace the the "ownerID" with your user ID. 
+If you have all requirements, hop over to the config.json file. When you are there, replace the "ownerID" with your user ID. 
 Replace the "token" with your token.
-And if you want, you can change the prefix. You can always change this from Discord with `prefix`setprefix <new prefix>.
+And if you want, you can change the prefix. You can always change this from Discord with `prefix`setprefix <new prefix here>.
