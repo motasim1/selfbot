@@ -116,6 +116,7 @@ bot.on('message', (message) => {
               const embed = new Discord.RichEmbed()
               .setTitle('Selfbot Help')
               .setColor(config.embedcolor)
+              .addField(config.prefix + 'help', 'Shows this help message.')
               .addField(config.prefix + 'ping', 'Returns "pong".')
               .addField(config.prefix + 'embed', 'Puts your text in an embed.')
               .addField(config.prefix + 'serverinfo', 'Shows the serverinfo.')
@@ -129,6 +130,8 @@ bot.on('message', (message) => {
               .addField(config.prefix + 'ban', 'Bans the mentioned user.')
               .addField('---------------------------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
               message.channel.sendEmbed(embed)
+            } else {
+
             }
           }
         }
