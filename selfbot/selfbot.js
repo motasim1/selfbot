@@ -84,6 +84,7 @@ bot.on('message', (message) => {
               if(!message.member.hasPermission("KICK_MEMBERS")) return;
               if(!message.mentions.users.size) return;
               if(reason.length < 1) return message.reply('You need to set a reason for this kick. Usage: ' + config.prefix + '`kick @user <reason>`')
+              if(mention.id === ownerID) return;
               message.reply(`I have kicked ${mention} successfully and I have deleted his/her messages in the last 7 days.`)
               const d = new Discord.RichEmbed()
               .setTitle('Kick')
@@ -98,6 +99,7 @@ bot.on('message', (message) => {
                 if(!message.member.hasPermission("BAN_MEMBERS")) return;
                 if(!message.mentions.users.size) return;
                 if(reason.length < 1) return message.reply('You need to set a reason for this ban. Usage: ' + config.prefix + '`ban @user <reason>`')
+                if(mention.id === ownerID) return;
                 message.reply(`I have banned ${mention} successfully and I have deleted his/her messages in the last 7 days.`)
                 const d = new Discord.RichEmbed()
                 .setTitle('Ban')
