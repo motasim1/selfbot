@@ -7,7 +7,8 @@ You can use it for your own.
 Requirements:
 
 Node.js installed
-discord.js installed in the folder
+
+discord.js installed in the folder (run `npm install discord.js --save` in the folder)
 
 ---
 
