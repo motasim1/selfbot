@@ -72,9 +72,9 @@ bot.on('message', (message) => {
           if(message.content.startsWith(config.prefix + 'setnick')) {
             if(!message.member.hasPermission("CHANGE_NICKNAME")) return console.log(`You can not change your nickname on the server ${message.guild.name} because you do not have the right perms.`)
             var nickname = args.slice(1).join(' ');
-            if(nickname === 'null') return message.member.setNickname(null)
+            if(nickname === 'null') return message.member.setNickname(null).then(console.log(`Setted your nickname on the server **${message.guild.name}** back to ${bot.user.username}`))
             message.member.setNickname(nickname);
-            console.log(`Changed nickname on the server ${message.guild.name} to ${nickname}`)
+            console.log(`Changed nickname on the server **${message.guild.name}** to **${nickname}**`)
             message.delete().catch(console.error);
           } else {
             // Moderation part. Works only with role perms
