@@ -29,7 +29,8 @@ How to start the bot:
 
 If you did everything correct, you will see this in your terminal: 
 
-Selfbot is online! Prefix: <your setted prefix in the config file>
+Selfbot is online! 
+Prefix: <your setted prefix in the config file>
 Logged in as: <your discord username#your discord discriminator>
 Use: <your setted prefix in the config file>help
 
