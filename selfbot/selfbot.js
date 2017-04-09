@@ -23,7 +23,7 @@ bot.on('message', (message) => {
       .setColor(config.embedcolor)
       .setDescription(embed)
       .addField('---------------------------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
-      message.edit(message.channel.sendEmbed(embedd))
+      message.channel.sendEmbed(embedd)
     } else {
       if(message.content === config.prefix + 'serverinfo') {
         if(!message.guild) return;
@@ -37,7 +37,7 @@ bot.on('message', (message) => {
         .addField('Server ID:', `${message.guild.id}`)
         .addField('Channels:', `${n}`)
         .addField('---------------------------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
-        message.edit(message.channel.sendEmbed(embed))
+        message.channel.sendEmbed(embed)
     } else {
       if(message.content === config.prefix + 'servers') {
         message.delete()
