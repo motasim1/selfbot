@@ -131,6 +131,7 @@ bot.on('message', (message) => {
               .addField(config.prefix + 'servers', 'Shows in how many servers you are in.')
               .addField(config.prefix + 'setnick', 'Sets your new nickname for the server.')
               .addField(config.prefix + 'meme', 'Post a random meme.')
+              .addField(config.prefix + 'shutdown', 'Shuts the bot down')
               .addField(config.prefix + 'prune', 'Deletes message that were sent by you.')
               .addField(config.prefix + 'kick', 'Kicks the mentioned user.')
               .addField(config.prefix + 'ban', 'Bans the mentioned user.')
@@ -142,6 +143,10 @@ bot.on('message', (message) => {
               } else {
                 if(message.content === config.prefix + 'chat') {
                   message.channel.sendMessage('Chat is dead\nWould you like to bring it alive?\n[Yes] [No]')
+                } else {
+                if(message.content === config.prefix + 'shutdown') {
+                  process.exit()
+                  }             
                 }
               }
             }
