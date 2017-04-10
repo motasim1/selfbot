@@ -38,3 +38,8 @@ Logged in as: `your discord username#your discord discriminator`
 Use: `your setted prefix in the config file`help
 
 If you get any errors or if you have any problems/questions, feel free to open an issue. i will take asap contact with you and try to help you out. Questions about the code will I ignore. Problems that are listed here above will I ignore
+
+
+Support server:
+
+https://discord.gg/tcBpMJS 
