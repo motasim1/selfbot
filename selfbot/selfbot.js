@@ -54,6 +54,8 @@ bot.on('message', (message) => {
         if(prefix.length > 1) return;
         config.prefix = prefix[0];
         fs.writeFile('./config.json', JSON.stringify(config), (err) => {if(err) console.error(err)});
+        console.log(`Changed prefix to: ${prefix}`)
+        console.log('-----------------------------')
       } else {
         if(message.content.startsWith(config.prefix + 'prune')) {
           const amount = !!parseInt(message.content.split(" ")[1]) ? parseInt(message.content.split(" ")[1]) : parseInt(message.content.split(" ")[2])
@@ -133,7 +135,9 @@ bot.on('message', (message) => {
               .addField('---------------------------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
               message.channel.sendEmbed(embed)
             } else {
-
+              if(message.content.startsWith('What is my prefix?')) {
+                message.reply(`Your prefix is: ${config.prefix}`)
+              }
             }
           }
         }
