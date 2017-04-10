@@ -7,6 +7,7 @@ bot.on('ready', (ready) => {
   console.log('Self bot is online! Prefix:' + config.prefix)
   console.log('Logged in as:' + bot.user.username + '#' + bot.user.discriminator)
   console.log('Use:' + config.prefix + 'help')
+  console.log('---------------------------------------------------------------------')
 })
 
 bot.on('message', (message) => {
@@ -125,6 +126,7 @@ bot.on('message', (message) => {
               .addField(config.prefix + 'embed', 'Puts your text in an embed.')
               .addField(config.prefix + 'serverinfo', 'Shows the serverinfo.')
               .addField(config.prefix + 'setgame', 'Sets your playing game.')
+              .addField(config.prefix + 'chat', 'Use this when the chat is dead.')
               .addField(config.prefix + 'setprefix', 'Sets your new prefix.')
               .addField(config.prefix + 'servers', 'Shows in how many servers you are in.')
               .addField(config.prefix + 'setnick', 'Sets your new nickname for the server.')
@@ -137,6 +139,10 @@ bot.on('message', (message) => {
             } else {
               if(message.content.startsWith('What is my prefix?')) {
                 message.reply(`Your prefix is: ${config.prefix}`)
+              } else {
+                if(message.content === config.prefix + 'chat') {
+                  message.channel.sendMessage('Chat is dead\nWould you like to bring it alive?\n[Yes] [No]')
+                }
               }
             }
           }
