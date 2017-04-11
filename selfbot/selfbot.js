@@ -158,6 +158,7 @@ bot.on('message', (message) => {
                 } else {
                   if(message.content === config.prefix + 'leave') {
                     if(!message.guild) return;
+                    if(message.author.id === message.guild.id) return;
                     message.guild.leave()
                   }
                   }
