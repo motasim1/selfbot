@@ -24,6 +24,7 @@ bot.on('message', (message) => {
     message.edit('Pong!')
   } else {
     if(message.content.startsWith(config.prefix + 'embed')) {
+      message.delete()
       let embed = args.slice(1).join(' ');
       if(embed.length <= 1) return;
       const embedd = new Discord.RichEmbed()
@@ -100,7 +101,7 @@ bot.on('message', (message) => {
               const d = new Discord.RichEmbed()
               .setTitle('Kick')
               .setColor('#ff0000')
-              .setDescription('You are kicked from the server ' + "`${message.guild.name}`")
+              .setDescription('You are kicked from the server ' + `**${message.guild.name}**`)
               .addField('Modrator:', `${message.author.username}#${message.author.discriminator}`)
               .addField('Reason:', reason)
               message.guild.member(mention).sendEmbed(d)
@@ -115,7 +116,7 @@ bot.on('message', (message) => {
                 const d = new Discord.RichEmbed()
                 .setTitle('Ban')
                 .setColor('#ff0000')
-                .setDescription('You are banned from the server ' + '`${message.guild.name}`')
+                .setDescription('You are banned from the server ' + `**${message.guild.name}**`)
                 .addField('Modrator:', `${message.author.username}#${message.author.discriminator}`)
                 .addField('Reason:', reason)
                 message.guild.member(mention).sendEmbed(d)
@@ -132,16 +133,19 @@ bot.on('message', (message) => {
               .addField(config.prefix + 'help', 'Shows this help message.')
               .addField(config.prefix + 'ping', 'Returns "pong".')
               .addField(config.prefix + 'embed', 'Puts your text in an embed.')
-              .addField(config.prefix + 'serverinfo', 'Shows the serverinfo.')
               .addField(config.prefix + 'setgame', 'Sets your playing game.')
               .addField(config.prefix + 'chat', 'Use this when the chat is dead.')
               .addField(config.prefix + 'setprefix', 'Sets your new prefix.')
               .addField(config.prefix + 'servers', 'Shows in how many servers you are in.')
-              .addField(config.prefix + 'setnick', 'Sets your new nickname for the server.')
               .addField(config.prefix + 'meme', 'Post a random meme.')
+              .addField('Mod part', '--')
+              .addField(config.prefix + 'setnick', 'Sets your new nickname for the server.')
               .addField(config.prefix + 'prune', 'Deletes message that were sent by you.')
               .addField(config.prefix + 'kick', 'Kicks the mentioned user.')
               .addField(config.prefix + 'ban', 'Bans the mentioned user.')
+              .addField('Server commands:', '--')
+              .addField(config.prefix + 'serverinfo', 'Shows the serverinfo.')
+              .addField(config.prefix + 'leave', 'Leaves the server where the message was sent in.')
               .addField('---------------------------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
               message.channel.sendEmbed(embed)
             } else {
@@ -152,21 +156,10 @@ bot.on('message', (message) => {
                   message.delete()
                   message.channel.sendMessage('Chat is dead\nWould you like to bring it alive?\n[Yes] [No]')
                 } else {
-                  if(message.content.startsWith(config.prefix + 'eval')) {
-	var code = args.join(' ')
-
-	try {
-		var evaled = eval(code)
-		if (typeof evaled !== 'string') {
-			evaled = require('util').inspect(evaled)
-		}
-		message.edit(message.content + '\n```js\n' + clean(evaled) + '\n```')
-	} catch (err) {
-		message.edit(message.content + '\n```css\nERROR:\n' + clean(err) + '\n```')
-	}
-} else {
-
-                }
+                  if(message.content === config.prefix + 'leave') {
+                    if(!message.guild) return;
+                    message.guild.leave()
+                  }
                   }
                 }
               }
