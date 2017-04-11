@@ -20,7 +20,7 @@ bot.on('ready', (ready) => {
 bot.on('message', (message) => {
   var args = message.content.split(/[ ]+/);
   if(message.author.id !== config.ownerID) return;
-  if(message.content.startsWith(config.prefix + 'ping')) {
+  if(message.content === config.prefix + 'ping') {
     message.edit('Pong!')
   } else {
     if(message.content.startsWith(config.prefix + 'embed')) {
@@ -81,12 +81,21 @@ bot.on('message', (message) => {
           bot.user.setGame(game);
         } else {
           if(message.content.startsWith(config.prefix + 'setnick')) {
+            var mention = message.mentions.users.first()
+            var nickname = args.slice(2).join(' ');
+            if(message.mentions.users.size) {
+              if(!message.member.hasPermission("MANAGE_NICKNAMES")) return console.log(`You can not change nicknames on the server ${message.guild.name} because you do not have the right perms.`)
+              if(nickname.length < 1) return;
+              if(nickname === 'null') return message.guild.member(mention).setNickname(null)
+              message.guild.member(mention).setNickname(nickname)
+            } else {
             if(!message.member.hasPermission("CHANGE_NICKNAME")) return console.log(`You can not change your nickname on the server ${message.guild.name} because you do not have the right perms.`)
             var nickname = args.slice(1).join(' ');
             if(nickname === 'null') return message.member.setNickname(null).then(console.log(`Setted your nickname on the server **${message.guild.name}** back to ${bot.user.username}`))
             message.member.setNickname(nickname);
             console.log(`Changed nickname on the server **${message.guild.name}** to **${nickname}**`)
             message.delete().catch(console.error);
+          }
           } else {
             let ownerID = config.ownerID
             // Moderation part. Works only with role perms
@@ -96,6 +105,7 @@ bot.on('message', (message) => {
               if(!message.member.hasPermission("KICK_MEMBERS")) return;
               if(!message.mentions.users.size) return;
               if(reason.length < 1) return message.reply('You need to set a reason for this kick. Usage: ' + config.prefix + '`kick @user <reason>`')
+              if (!message.guild.member(mention).kickable) return message.reply('I can not kick that member');
               if(mention.id === ownerID) return;
               message.reply(`I have kicked ${mention} successfully and I have deleted his/her messages in the last 7 days.`)
               const d = new Discord.RichEmbed()
@@ -111,6 +121,7 @@ bot.on('message', (message) => {
                 if(!message.member.hasPermission("BAN_MEMBERS")) return;
                 if(!message.mentions.users.size) return;
                 if(reason.length < 1) return message.reply('You need to set a reason for this ban. Usage: ' + config.prefix + '`ban @user <reason>`')
+                if (!message.guild.member(mention).bannable) return message.reply('I can not ban that member');
                 if(mention.id === ownerID) return;
                 message.reply(`I have banned ${mention} successfully and I have deleted his/her messages in the last 7 days.`)
                 const d = new Discord.RichEmbed()
@@ -139,7 +150,7 @@ bot.on('message', (message) => {
               .addField(config.prefix + 'servers', 'Shows in how many servers you are in.')
               .addField(config.prefix + 'meme', 'Post a random meme.')
               .addField('Mod part', '--')
-              .addField(config.prefix + 'setnick', 'Sets your new nickname for the server.')
+              .addField(config.prefix + 'setnick', 'Sets your new nickname for the server or for the mentioned user.')
               .addField(config.prefix + 'prune', 'Deletes message that were sent by you.')
               .addField(config.prefix + 'kick', 'Kicks the mentioned user.')
               .addField(config.prefix + 'ban', 'Bans the mentioned user.')
