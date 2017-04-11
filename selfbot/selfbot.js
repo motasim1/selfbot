@@ -21,7 +21,7 @@ bot.on('message', (message) => {
   var args = message.content.split(/[ ]+/);
   if(message.author.id !== config.ownerID) return;
   if(message.content === config.prefix + 'ping') {
-    message.edit('Pong!')
+  message.channel.send("Ping?").then(m => m.edit(`Pong! Took ${m.createdTimestamp - message.createdTimestamp}ms.`))
   } else {
     if(message.content.startsWith(config.prefix + 'embed')) {
       message.delete()
@@ -81,6 +81,7 @@ bot.on('message', (message) => {
           bot.user.setGame(game);
         } else {
           if(message.content.startsWith(config.prefix + 'setnick')) {
+            if(!message.guild) return;
             var mention = message.mentions.users.first()
             var nickname = args.slice(2).join(' ');
             if(message.mentions.users.size) {
