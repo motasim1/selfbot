@@ -43,3 +43,13 @@ If you get any errors or if you have any problems/questions, feel free to open a
 Support server:
 
 https://discord.gg/tcBpMJS 
+
+---
+
+If you want to update your bot, do the following steps:
+
+1. Delete the whole code of your selfbot.js
+
+2. Copy the new code from here and paste it in your selfbot.js
+
+3. Save your new selfbot.js code and you are ready to go!
