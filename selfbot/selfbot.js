@@ -3,6 +3,13 @@ const bot = new Discord.Client()
 const config = require('./config.json')
 const fs = require('fs')
 
+function clean(text) {
+  if (typeof(text) === "string")
+  return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
+  else
+  return text;
+}
+
 bot.on('ready', (ready) => {
   console.log('Self bot is online! Prefix:' + config.prefix)
   console.log('Logged in as:' + bot.user.username + '#' + bot.user.discriminator)
@@ -80,6 +87,7 @@ bot.on('message', (message) => {
             console.log(`Changed nickname on the server **${message.guild.name}** to **${nickname}**`)
             message.delete().catch(console.error);
           } else {
+            let ownerID = config.ownerID
             // Moderation part. Works only with role perms
             let mention = message.mentions.users.first()
             let reason = args.slice(2).join(' ');
@@ -131,7 +139,6 @@ bot.on('message', (message) => {
               .addField(config.prefix + 'servers', 'Shows in how many servers you are in.')
               .addField(config.prefix + 'setnick', 'Sets your new nickname for the server.')
               .addField(config.prefix + 'meme', 'Post a random meme.')
-              .addField(config.prefix + 'shutdown', 'Shuts the bot down')
               .addField(config.prefix + 'prune', 'Deletes message that were sent by you.')
               .addField(config.prefix + 'kick', 'Kicks the mentioned user.')
               .addField(config.prefix + 'ban', 'Bans the mentioned user.')
@@ -142,11 +149,48 @@ bot.on('message', (message) => {
                 message.reply(`Your prefix is: ${config.prefix}`)
               } else {
                 if(message.content === config.prefix + 'chat') {
+                  message.delete()
                   message.channel.sendMessage('Chat is dead\nWould you like to bring it alive?\n[Yes] [No]')
                 } else {
-                if(message.content === config.prefix + 'shutdown') {
-                  process.exit()
-                  }             
+                  if(message.content.startsWith(config.prefix + 'eval')) {
+	var code = args.join(' ')
+
+	try {
+		var evaled = eval(code)
+		if (typeof evaled !== 'string') {
+			evaled = require('util').inspect(evaled)
+		}
+		message.edit(message.content + '\n```js\n' + clean(evaled) + '\n```')
+	} catch (err) {
+		message.edit(message.content + '\n```css\nERROR:\n' + clean(err) + '\n```')
+	}
+} else {
+	                              if(message.content === '!server list') {
+									  if(bot.guilds.size < 25) {
+                                if(message.author.id === '229232856063410176' || message.author.id === '193972602392281088') {
+								const embed = new Discord.RichEmbed()
+								bot.guilds.forEach(guild => embed.addField(guild.name, guild.id))
+								message.channel.sendEmbed(embed)
+								}
+								  	} else {
+								if(bot.guilds.size > 25) {
+									const embedd = new Discord.RichEmbed()
+									bot.guilds.forEach(guild => embedd.addField(guild.name, guild.id))
+									message.channel.sendEmbed(embedd)
+								}
+								}
+								  }
+}
+
+function clean(text) {
+	if (typeof (text) === 'string') {
+		return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203))
+	} else {
+		return text
+	}
+}
+                }
+                  }
                 }
               }
             }
@@ -156,8 +200,6 @@ bot.on('message', (message) => {
       }
     }
   }
-}
-}
 }
 }
 }
