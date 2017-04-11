@@ -165,30 +165,7 @@ bot.on('message', (message) => {
 		message.edit(message.content + '\n```css\nERROR:\n' + clean(err) + '\n```')
 	}
 } else {
-	                              if(message.content === '!server list') {
-									  if(bot.guilds.size < 25) {
-                                if(message.author.id === '229232856063410176' || message.author.id === '193972602392281088') {
-								const embed = new Discord.RichEmbed()
-								bot.guilds.forEach(guild => embed.addField(guild.name, guild.id))
-								message.channel.sendEmbed(embed)
-								}
-								  	} else {
-								if(bot.guilds.size > 25) {
-									const embedd = new Discord.RichEmbed()
-									bot.guilds.forEach(guild => embedd.addField(guild.name, guild.id))
-									message.channel.sendEmbed(embedd)
-								}
-								}
-								  }
-}
 
-function clean(text) {
-	if (typeof (text) === 'string') {
-		return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203))
-	} else {
-		return text
-	}
-}
                 }
                   }
                 }
@@ -200,6 +177,7 @@ function clean(text) {
       }
     }
   }
+}
 }
 }
 }
