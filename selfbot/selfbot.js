@@ -22,6 +22,7 @@ bot.on('message', (message) => {
   if(message.author.id !== config.ownerID) return;
   if(message.content === config.prefix + 'ping') {
   message.channel.send("Ping?").then(m => m.edit(`Pong! Took ${m.createdTimestamp - message.createdTimestamp}ms.`))
+  console.log(`Runned ${config.prefix}ping on the server **${message.guild.name}**`)
   } else {
     if(message.content.startsWith(config.prefix + 'embed')) {
       message.delete()
@@ -34,6 +35,7 @@ bot.on('message', (message) => {
       .setDescription(embed)
       .addField('---------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
       message.channel.sendEmbed(embedd)
+      console.log(`Runned ${config.prefix}embed on the server **${message.guild.name}**`)
     } else {
       if(message.content === config.prefix + 'serverinfo') {
         if(!message.guild) return;
@@ -48,6 +50,7 @@ bot.on('message', (message) => {
         .addField('Channels:', `${n}`)
         .addField('---------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
         message.channel.sendEmbed(embed)
+        console.log(`Runned ${config.prefix}serverinfo on the server **${message.guild.name}**`)
     } else {
       if(message.content === config.prefix + 'servers') {
         message.delete()
@@ -57,6 +60,7 @@ bot.on('message', (message) => {
         .setColor(config.embedcolor)
         .addField('---------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
         message.channel.sendEmbed(embed)
+        console.log(`Runned ${config.prefix}servers on the server **${message.guild.name}**`)
     } else {
       if(message.content.startsWith(config.prefix + 'setprefix')) {
         let prefix = args.slice(1).join(' ');
@@ -66,6 +70,7 @@ bot.on('message', (message) => {
         fs.writeFile('./config.json', JSON.stringify(config), (err) => {if(err) console.error(err)});
         console.log(`Changed prefix to: ${prefix}`)
         console.log('-----------------------------')
+        console.log(`Runned ${config.prefix}setprefix on the server **${message.guild.name}**`)
       } else {
         if(message.content.startsWith(config.prefix + 'prune')) {
           const amount = !!parseInt(message.content.split(" ")[1]) ? parseInt(message.content.split(" ")[1]) : parseInt(message.content.split(" ")[2])
@@ -80,6 +85,7 @@ bot.on('message', (message) => {
           if(message.content.startsWith(config.prefix + 'setgame')) {
           var game = args.join(" ");
           bot.user.setGame(game);
+          console.log(`Runned ${config.prefix}setgame on the server **${message.guild.name}**`)
         } else {
           if(message.content.startsWith(config.prefix + 'setnick')) {
             if(!message.guild) return;
@@ -96,6 +102,7 @@ bot.on('message', (message) => {
             if(nickname === 'null') return message.member.setNickname(null).then(console.log(`Setted your nickname on the server **${message.guild.name}** back to ${bot.user.username}`))
             message.member.setNickname(nickname);
             console.log(`Changed nickname on the server **${message.guild.name}** to **${nickname}**`)
+            console.log(`Runned ${config.prefix}ssetnick on the server **${message.guild.name}**`)
             message.delete().catch(console.error);
             const embed = new Discord.RichEmbed()
             .setTitle('Nickname change')
@@ -122,6 +129,7 @@ bot.on('message', (message) => {
               .addField('Reason:', reason)
               message.guild.member(mention).sendEmbed(d)
               message.guild.member(mention).kick(7)
+              console.log(`Runned ${config.prefix}kick on the server **${message.guild.name}**`)
             } else {
               if(message.content.startsWith(config.prefix + 'ban')) {
                 if(!message.member.hasPermission("BAN_MEMBERS")) return;
@@ -138,18 +146,22 @@ bot.on('message', (message) => {
                 .addField('Reason:', reason)
                 message.guild.member(mention).sendEmbed(d)
                 message.guild.member(mention).ban(7)
+                console.log(`Runned ${config.prefix}ban on the server **${message.guild.name}**`)
             } else {
               var memes = ['https://cdn.discordapp.com/attachments/282816188294365194/299963082015244289/images.png'] // Post your memes between the []. Example: ['https://meme.io']
               if(message.content === config.prefix + 'meme') {
                 message.channel.sendMessage(memes[Math.floor(Math.random() * memes.length)])
+                console.log(`Runned ${config.prefix}meme on the server **${message.guild.name}**`)
           } else {
             if(message.content === config.prefix + 'help') {
               const embed = new Discord.RichEmbed()
               .setTitle('Selfbot Help')
               .setColor(config.embedcolor)
               .addField(config.prefix + 'help', 'Shows this help message.')
+              .addField(config.prefix + 'insult', 'Insults the mentioned user.')
               .addField(config.prefix + 'ping', 'Returns "pong".')
               .addField(config.prefix + 'embed', 'Puts your text in an embed.')
+              .addField(config.prefix + 'github', 'Shows the link for my github.')
               .addField(config.prefix + 'setgame', 'Sets your playing game.')
               .addField(config.prefix + 'chat', 'Use this when the chat is dead.')
               .addField(config.prefix + 'setprefix', 'Sets your new prefix.')
@@ -165,6 +177,7 @@ bot.on('message', (message) => {
               .addField(config.prefix + 'leave', 'Leaves the server where the message was sent in.')
               .addField('---------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
               message.channel.sendEmbed(embed)
+              console.log(`Runned ${config.prefix}help on the server **${message.guild.name}**`)
             } else {
               if(message.content.startsWith('What is my prefix?')) {
                 message.reply(`Your prefix is: ${config.prefix}`)
@@ -175,6 +188,7 @@ bot.on('message', (message) => {
                 } else {
                   if(message.content === config.prefix + 'leave') {
                     if(!message.guild) return;
+                    message.delete()
                     if(message.author.id === message.guild.id) return;
                     message.guild.leave()
                   } else {
@@ -182,6 +196,23 @@ bot.on('message', (message) => {
                         if(!message.mentions.users.size) return;
                         var insults = ['Is your ass jealous of the amount of shit that just came out of your mouth?', 'Two wrongs dont make a right, take your parents as an example.', 'Id like to see things from your point of view but I cant seem to get my head that far up my ass.', 'If I wanted to kill myself Id climb your ego and jump to your IQ.', 'Your family tree must be a cactus because everybody on it is a prick.', 'You are so ugly, when your mom dropped you off at school she got a fine for littering.', 'Your birth certificate is an apology letter from the condom factory.']
                         message.channel.sendMessage(insults[Math.floor(Math.random() * insults.length)])
+                        console.log(`Runned ${config.prefix}insult on the server **${message.guild.name}**`)
+                      } else {
+                        if(message.content.startsWith(config.prefix + 'github')) {
+                          if(message.mentions.users.size) {
+                            const embed = new Discord.RichEmbed()
+                            .setTitle('GitHub')
+                            .setDescription('You can find my code on [my](https://www.github.com/motasim1/selfbot) github.')
+                            message.channel.sendMessage(`${mention}:`)
+                            message.channel.sendEmbed(embed)
+                          } else {
+                            const embed = new Discord.RichEmbed()
+                            .setTitle('GitHub')
+                            .setDescription('You can find my code on [my](https://www.github.com/motasim1/selfbot) github.')
+                            message.channel.sendEmbed(embed)
+                          }
+                        }
+                      }
                       }
                     }
                   }
@@ -195,7 +226,6 @@ bot.on('message', (message) => {
       }
     }
   }
-}
 }
 }
 })
