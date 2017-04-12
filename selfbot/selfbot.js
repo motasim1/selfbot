@@ -175,6 +175,7 @@ bot.on('message', (message) => {
               .addField('Server commands:', '--')
               .addField(config.prefix + 'serverinfo', 'Shows the serverinfo.')
               .addField(config.prefix + 'leave', 'Leaves the server where the message was sent in.')
+              .addField(config.prefix + 'spam', 'Spams the server or DM')
               .addField('---------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
               message.channel.sendEmbed(embed)
               console.log(`Runned ${config.prefix}help on the server **${message.guild.name}**`)
