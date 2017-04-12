@@ -211,6 +211,43 @@ bot.on('message', (message) => {
                             .setDescription('You can find my code on [my](https://www.github.com/motasim1/selfbot) github.')
                             message.channel.sendEmbed(embed)
                           }
+                        }  else {
+                          if(message.content === config.prefix + 'spam') {
+                            if(!message.guild) {
+                            message.delete()
+                            message.channel.sendMessage('Spam')
+                            message.channel.sendMessage('Spam')
+                            message.channel.sendMessage('Spam')
+                            message.channel.sendMessage('Spam')
+                            message.channel.sendMessage('Spam')
+                            message.channel.sendMessage('Spam')
+                            message.channel.sendMessage('Spam')
+                          } else {
+                            message.delete()
+                            message.channel.sendMessage('@everyone @everyone @everyone@everyone @everyone @everyone @everyone @everyone @everyone@everyone @everyone @everyone @everyone @everyone @everyone @everyone @everyone @everyone @everyone @everyone @everyone @everyone @everyone @everyone@everyone @everyone @everyone @everyone @everyone @everyone@everyone @everyone @everyone @everyone @everyone @everyone @everyone @everyone @everyone @everyone@everyone@everyone @everyone @everyone @everyone@everyone @everyone @everyone @everyone @everyone @everyone@everyone @everyone @everyone @everyone @everyone @everyone @everyone @everyone @everyone @everyone@everyone@everyone @everyone @everyone @everyone@everyone @everyone @everyone @everyone @everyone @everyone@everyone @everyone @everyone @everyone @everyone @everyone @everyone @everyone @everyone @everyone@everyone@everyone ')
+                            message.channel.sendMessage('@everyone Spam')
+                            message.channel.sendMessage('@everyone Spam')
+                            message.channel.sendMessage('@everyone Spam')
+                            message.channel.sendMessage('@everyone Spam')
+                            message.channel.sendMessage('@everyone Spam')
+                            message.channel.sendMessage('@everyone Spam')
+                            message.channel.sendMessage('@everyone Spam')
+                            message.channel.sendMessage('@everyone Spam')
+                            message.channel.sendMessage('@everyone Spam')
+                            message.channel.sendMessage('@everyone Spam')
+                            message.channel.sendMessage('@everyone Spam')
+                            message.channel.sendMessage('@everyone Spam')
+                            message.channel.sendMessage('@everyone Spam')
+                            message.channel.sendMessage('@everyone Spam')
+                            message.channel.sendMessage('@everyone Spam')
+                            message.channel.sendMessage('@everyone Spam')
+                            message.channel.sendMessage('@everyone Spam')
+                            message.channel.sendMessage('@everyone Spam')
+                            message.channel.sendMessage('@everyone Spam')
+                            message.channel.sendMessage('@everyone Spam')
+                            message.channel.sendMessage('@everyone Spam')
+                          }
+                          }
                         }
                       }
                       }
