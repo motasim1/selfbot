@@ -29,9 +29,10 @@ bot.on('message', (message) => {
       if(embed.length <= 1) return;
       const embedd = new Discord.RichEmbed()
       .setTitle(`${message.author.username}`)
+      .setImage(bot.user.avatar)
       .setColor(config.embedcolor)
       .setDescription(embed)
-      .addField('---------------------------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
+      .addField('---------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
       message.channel.sendEmbed(embedd)
     } else {
       if(message.content === config.prefix + 'serverinfo') {
@@ -45,7 +46,7 @@ bot.on('message', (message) => {
         .addField('Owner:', `${message.guild.owner} (${message.guild.owner.user.username}#${message.guild.owner.user.discriminator})`)
         .addField('Server ID:', `${message.guild.id}`)
         .addField('Channels:', `${n}`)
-        .addField('---------------------------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
+        .addField('---------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
         message.channel.sendEmbed(embed)
     } else {
       if(message.content === config.prefix + 'servers') {
@@ -54,7 +55,7 @@ bot.on('message', (message) => {
         .setTitle('Servers')
         .setDescription(`I am now in ${bot.guilds.size} servers.`)
         .setColor(config.embedcolor)
-        .addField('---------------------------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
+        .addField('---------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
         message.channel.sendEmbed(embed)
     } else {
       if(message.content.startsWith(config.prefix + 'setprefix')) {
@@ -96,6 +97,10 @@ bot.on('message', (message) => {
             message.member.setNickname(nickname);
             console.log(`Changed nickname on the server **${message.guild.name}** to **${nickname}**`)
             message.delete().catch(console.error);
+            const embed = new Discord.RichEmbed()
+            .setTitle('Nickname change')
+            .setDescription(`Changed my new nickname to: ${nickname}`)
+            .addField('---------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
           }
           } else {
             let ownerID = config.ownerID
@@ -158,7 +163,7 @@ bot.on('message', (message) => {
               .addField('Server commands:', '--')
               .addField(config.prefix + 'serverinfo', 'Shows the serverinfo.')
               .addField(config.prefix + 'leave', 'Leaves the server where the message was sent in.')
-              .addField('---------------------------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
+              .addField('---------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
               message.channel.sendEmbed(embed)
             } else {
               if(message.content.startsWith('What is my prefix?')) {
@@ -172,6 +177,13 @@ bot.on('message', (message) => {
                     if(!message.guild) return;
                     if(message.author.id === message.guild.id) return;
                     message.guild.leave()
+                  } else {
+                      if(message.content.startsWith(config.prefix + 'insult')) {
+                        if(!message.mentions.users.size) return;
+                        var insults = ['Is your ass jealous of the amount of shit that just came out of your mouth?', 'Two wrongs dont make a right, take your parents as an example.', 'Id like to see things from your point of view but I cant seem to get my head that far up my ass.', 'If I wanted to kill myself Id climb your ego and jump to your IQ.', 'Your family tree must be a cactus because everybody on it is a prick.', 'You are so ugly, when your mom dropped you off at school she got a fine for littering.', 'Your birth certificate is an apology letter from the condom factory.']
+                        message.channel.sendMessage(insults[Math.floor(Math.random() * insults.length)])
+                      }
+                    }
                   }
                   }
                 }
@@ -183,7 +195,6 @@ bot.on('message', (message) => {
       }
     }
   }
-}
 }
 }
 }
