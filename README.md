@@ -21,11 +21,9 @@ And if you want, you can change the prefix. You can always change this from Disc
 How to start the bot:
 
 1. First, install Node.js
-2. Then, you need to have an editor. (I use Atom)
+2. Open now the file "install_requirements.bat"
 3. Change the config.json file so it works for you
-4. Open up a terminal in your folder and run `npm install discord.js --save` (works only when Node.js is installed and without this, your bot won't work)
-5. Run in a terminal `npm install -g nodemon` (This is to restart the bot automatically and it is usefull)
-6. Now, open the file "launch.bat" and you are ready to go!
+4. Now, open the file "launch.bat" and you are ready to go!
 ---
 
 If you did everything correct, you will see this in your terminal: 
