@@ -8,8 +8,6 @@ Requirements:
 
 Node.js installed
 
-discord.js installed in the folder (run `npm install discord.js --save` in the folder)
-
 ---
 
 If you have all requirements, hop over to the config.json file. When you are there, replace the "ownerID" with your user ID. 
