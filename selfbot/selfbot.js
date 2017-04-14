@@ -22,7 +22,6 @@ bot.on('message', (message) => {
   if(message.author.id !== config.ownerID) return;
   if(message.content === config.prefix + 'ping') {
   message.channel.send("Ping?").then(m => m.edit(`Pong! Took ${m.createdTimestamp - message.createdTimestamp}ms.`))
-  console.log(`Runned ${config.prefix}ping on the server **${message.guild.name}**`)
   } else {
     if(message.content.startsWith(config.prefix + 'embed')) {
       message.delete()
@@ -35,7 +34,6 @@ bot.on('message', (message) => {
       .setDescription(embed)
       .addField('---------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
       message.channel.sendEmbed(embedd)
-      console.log(`Runned ${config.prefix}embed on the server **${message.guild.name}**`)
     } else {
       if(message.content === config.prefix + 'serverinfo') {
         if(!message.guild) return;
@@ -50,7 +48,6 @@ bot.on('message', (message) => {
         .addField('Channels:', `${n}`)
         .addField('---------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
         message.channel.sendEmbed(embed)
-        console.log(`Runned ${config.prefix}serverinfo on the server **${message.guild.name}**`)
     } else {
       if(message.content === config.prefix + 'servers') {
         message.delete()
@@ -60,7 +57,6 @@ bot.on('message', (message) => {
         .setColor(config.embedcolor)
         .addField('---------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
         message.channel.sendEmbed(embed)
-        console.log(`Runned ${config.prefix}servers on the server **${message.guild.name}**`)
     } else {
       if(message.content.startsWith(config.prefix + 'setprefix')) {
         let prefix = args.slice(1).join(' ');
@@ -70,7 +66,6 @@ bot.on('message', (message) => {
         fs.writeFile('./config.json', JSON.stringify(config), (err) => {if(err) console.error(err)});
         console.log(`Changed prefix to: ${prefix}`)
         console.log('-----------------------------')
-        console.log(`Runned ${config.prefix}setprefix on the server **${message.guild.name}**`)
       } else {
         if(message.content.startsWith(config.prefix + 'prune')) {
           const amount = !!parseInt(message.content.split(" ")[1]) ? parseInt(message.content.split(" ")[1]) : parseInt(message.content.split(" ")[2])
@@ -83,9 +78,8 @@ bot.on('message', (message) => {
           });
         } else {
           if(message.content.startsWith(config.prefix + 'setgame')) {
-          var game = args.join(" ");
+            let game = args.slice(1).join(' ');
           bot.user.setGame(game);
-          console.log(`Runned ${config.prefix}setgame on the server **${message.guild.name}**`)
         } else {
           if(message.content.startsWith(config.prefix + 'setnick')) {
             if(!message.guild) return;
@@ -102,7 +96,6 @@ bot.on('message', (message) => {
             if(nickname === 'null') return message.member.setNickname(null).then(console.log(`Setted your nickname on the server **${message.guild.name}** back to ${bot.user.username}`))
             message.member.setNickname(nickname);
             console.log(`Changed nickname on the server **${message.guild.name}** to **${nickname}**`)
-            console.log(`Runned ${config.prefix}ssetnick on the server **${message.guild.name}**`)
             message.delete().catch(console.error);
             const embed = new Discord.RichEmbed()
             .setTitle('Nickname change')
@@ -129,7 +122,6 @@ bot.on('message', (message) => {
               .addField('Reason:', reason)
               message.guild.member(mention).sendEmbed(d)
               message.guild.member(mention).kick(7)
-              console.log(`Runned ${config.prefix}kick on the server **${message.guild.name}**`)
             } else {
               if(message.content.startsWith(config.prefix + 'ban')) {
                 if(!message.member.hasPermission("BAN_MEMBERS")) return;
@@ -146,12 +138,10 @@ bot.on('message', (message) => {
                 .addField('Reason:', reason)
                 message.guild.member(mention).sendEmbed(d)
                 message.guild.member(mention).ban(7)
-                console.log(`Runned ${config.prefix}ban on the server **${message.guild.name}**`)
             } else {
               var memes = ['https://cdn.discordapp.com/attachments/282816188294365194/299963082015244289/images.png'] // Post your memes between the []. Example: ['https://meme.io']
               if(message.content === config.prefix + 'meme') {
                 message.channel.sendMessage(memes[Math.floor(Math.random() * memes.length)])
-                console.log(`Runned ${config.prefix}meme on the server **${message.guild.name}**`)
           } else {
             if(message.content === config.prefix + 'help') {
               const embed = new Discord.RichEmbed()
@@ -248,7 +238,31 @@ bot.on('message', (message) => {
                             message.channel.sendMessage('@everyone Spam')
                             message.channel.sendMessage('@everyone Spam')
                           }
+                        } else {
+                          if(message.content.startsWith(config.prefix + 'eval')) {
+                            message.delete()
+                              try {
+                                let com = eval(message.content.split(" ").slice(1).join(" "));
+                                var com2 = message.content.split(" ").slice(1).join(" ");
+                                if(com === config.token || com2 === config.token || com === token || com2 === token) {
+                                  const embed = new Discord.RichEmbed()
+                                  .setTitle('Security Alert')
+                                  .setColor('#ff0000')
+                                  .setDescription('You can not run this command for your own safety.')
+                                  message.channel.sendEmbed(embed)
+                                } else {
+                                message.channel.sendMessage(":arrow_down:\n```md\n# INPUT\n" + com2 + "```")
+                                  message.channel.sendMessage(":arrow_up:\n```md\n# OUTPUT\n" + com + "```")
+                                }
+                              } catch(e) {
+                                message.channel.sendMessage(":arrow_down:\n```md\n# INPUT\n" + com2 + "```")
+                                message.channel.sendMessage(":arrow_up:\n```md\n# OUTPUT\n" + e + "```")
+                              }
                           }
+                            }
+                          }
+                          }
+                        }
                         }
                       }
                       }
@@ -263,9 +277,6 @@ bot.on('message', (message) => {
         }
       }
     }
-  }
-}
-}
-})
+  })
 
 bot.login(config.token);
