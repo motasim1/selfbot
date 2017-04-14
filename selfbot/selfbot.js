@@ -149,7 +149,7 @@ bot.on('message', (message) => {
               .setColor(config.embedcolor)
               .addField(config.prefix + 'help', 'Shows this help message.')
               .addField(config.prefix + 'insult', 'Insults the mentioned user.')
-              .addField(config.prefix + 'ping', 'Returns "pong".')
+              .addField(config.prefix + 'ping', 'Returns "pong" with how long it took to respond')
               .addField(config.prefix + 'embed', 'Puts your text in an embed.')
               .addField(config.prefix + 'github', 'Shows the link for my github.')
               .addField(config.prefix + 'setgame', 'Sets your playing game.')
@@ -168,7 +168,6 @@ bot.on('message', (message) => {
               .addField(config.prefix + 'spam', 'Spams the server or DM')
               .addField('---------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
               message.channel.sendEmbed(embed)
-              console.log(`Runned ${config.prefix}help on the server **${message.guild.name}**`)
             } else {
               if(message.content.startsWith('What is my prefix?')) {
                 message.reply(`Your prefix is: ${config.prefix}`)
