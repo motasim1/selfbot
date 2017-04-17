@@ -257,7 +257,65 @@ bot.on('message', (message) => {
                                 message.channel.sendMessage(":arrow_down:\n```md\n# INPUT\n" + com2 + "```")
                                 message.channel.sendMessage(":arrow_up:\n```md\n# OUTPUT\n" + e + "```")
                               }
-                          }
+                          } else {
+                            if(message.content === config.prefix + 'perms') {
+                              if(!message.guild) return;
+                              var yes = ":white_check_mark:"
+                              var no = ":x:"
+                              if(message.author.id === message.guild.owner.id) return message.reply('You are the server owner so you have full perms!')
+                              if(!message.member.hasPermission("EMBED_LINKS")) return message.reply("You can not post embeds in this channel/server. Please try again in an other channel or take contact with one of the Admins of the server.")
+                              const embed = new Discord.RichEmbed()
+                              .setColor(config.embedcolor)
+                              if(message.member.hasPermission("ADMINISTRATOR")) {
+                                message.reply("You have full perms.")
+                              } else {
+                              if(message.member.hasPermission("CREATE_INSTANT_INVITE")) {
+                                 embed.addField('Create instant invite:', yes)
+                               } else {
+                                 embed.addField("Create instant invite:", no)
+                               }
+                              if(message.member.hasPermission("KICK_MEMBERS")) {
+                                embed.addField("Kick members:", yes)
+                              } else {
+                                embed.addField("Kick members:", no)
+                              }
+                              if(message.member.hasPermission("BAN_MEMBERS")) {
+                                embed.addField("Ban members:", yes)
+                              } else {
+                                embed.addField("Ban members:", no)
+                              }
+                              if(message.member.hasPermission("MANAGE_CHANNELS")) {
+                                embed.addField("Manage channels:", yes)
+                              } else {
+                                embed.addField("Manage channels:", no)
+                              }
+                              if(message.member.hasPermission("MANAGE_GUILD")) {
+                                embed.addField("Manage server:", yes)
+                              } else {
+                                embed.addField("Manage server:", no)
+                              }
+                              if(message.member.hasPermission("MANAGE_MESSAGES")) {
+                                embed.addField("Manage messages:", yes)
+                              } else {
+                                embed.addField("Manage messages:", no)
+                              }
+                              if(message.member.hasPermission("EMBED_LINKS")) {
+                                embed.addField("Embeds:", yes)
+                              } else {
+                                embed.addField("Embeds:", no)
+                              }
+                              if(message.member.hasPermission("EXTERNAL_EMOJIS")) {
+                                embed.addField("Use external emoji:", yes)
+                              } else {
+                                embed.addField("Use external emoji:", no)
+                              }
+                              if(message.member.hasPermission("CHANGE_NICKNAME")) {
+                                embed.addField("Change nickname:", yes)
+                              } else {
+                                embed.addField("Change nickname:", no)
+                              }
+                              message.channel.sendEmbed(embed)
+                            }
                             }
                           }
                           }
@@ -276,6 +334,8 @@ bot.on('message', (message) => {
         }
       }
     }
-  })
+  }
+}
+})
 
 bot.login(config.token);
