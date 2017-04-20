@@ -25,14 +25,14 @@ bot.on('message', (message) => {
   } else {
     if(message.content.startsWith(config.prefix + 'embed')) {
       message.delete()
-      let embed = args.slice(1).join(' ');
-      if(embed.length <= 1) return;
-      const embedd = new Discord.RichEmbed()
+      let embedtext = args.slice(1).join(' ');
+      if(embedtext.length <= 1) return;
+      const embed = new Discord.RichEmbed()
       .setTitle(`${message.author.username}`)
       .setColor(config.embedcolor)
-      .setDescription(embed)
+      .setDescription(embedtext)
       .addField('---------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
-      message.channel.sendEmbed(embedd)
+      message.channel.sendEmbed(embed)
     } else {
       if(message.content === config.prefix + 'serverinfo') {
         if(!message.guild) return;
@@ -61,7 +61,7 @@ bot.on('message', (message) => {
         let prefix = args.slice(1).join(' ');
         if(prefix.length < 1) return;
         if(prefix.length > 1) return;
-        config.prefix = prefix[0];
+        prefix = prefix[0];
         fs.writeFile('./config.json', JSON.stringify(config), (err) => {if(err) console.error(err)});
         console.log(`Changed prefix to: ${prefix}`)
         console.log('-----------------------------')
@@ -147,6 +147,7 @@ bot.on('message', (message) => {
               .setTitle('Selfbot Help')
               .setColor(config.embedcolor)
               .addField(config.prefix + 'help', 'Shows this help message.')
+              .addField(config.prefix + 'info', 'Shows the bot info.')
               .addField(config.prefix + 'insult', 'Insults the mentioned user.')
               .addField(config.prefix + 'ping', 'Returns "pong" with how long it took to respond')
               .addField(config.prefix + 'embed', 'Puts your text in an embed.')
@@ -314,9 +315,18 @@ bot.on('message', (message) => {
                               } else {
                                 embed.addField("Change nickname:", no)
                               }
+                              embed.addField('---------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
                               message.channel.sendEmbed(embed)
                             }
+                          } else {
+                            if(message.content === config.prefix + 'info') {
+                              const embed = new Discord.RichEmbed()
+                              .setTitle("Selfbot Info")
+                              .setColor(config.embedcolor)
+                              .setDescription("This is a selfbot which you can host for yourself.\nYou can get the code from my [github](https://github.com/motasim1/selfbot).\nI am coded in JS by motasim#4036.\nIf you have any questions and or suggestions for the bot, feel free to join the support server. (You can find the link on the first page of my GitHub project)")
+                              message.channel.sendEmbed(embed)
                             }
+                          }
                           }
                           }
                         }
