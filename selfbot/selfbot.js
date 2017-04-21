@@ -26,7 +26,7 @@ bot.on('message', (message) => {
     if(message.content.startsWith(config.prefix + 'embed')) {
       message.delete()
       let embedtext = args.slice(1).join(' ');
-      if(embedtext.length <= 1) return;
+      if(embed.length <= 1) return;
       const embed = new Discord.RichEmbed()
       .setTitle(`${message.author.username}`)
       .setColor(config.embedcolor)
@@ -106,38 +106,6 @@ bot.on('message', (message) => {
             // Moderation part. Works only with role perms
             let mention = message.mentions.users.first()
             let reason = args.slice(2).join(' ');
-            if(message.content.startsWith(config.prefix + 'kick')) {
-              if(!message.member.hasPermission("KICK_MEMBERS")) return;
-              if(!message.mentions.users.size) return;
-              if(reason.length < 1) return message.reply('You need to set a reason for this kick. Usage: ' + config.prefix + '`kick @user <reason>`')
-              if (!message.guild.member(mention).kickable) return message.reply('I can not kick that member');
-              if(mention.id === ownerID) return;
-              message.reply(`I have kicked ${mention} successfully and I have deleted his/her messages in the last 7 days.`)
-              const d = new Discord.RichEmbed()
-              .setTitle('Kick')
-              .setColor('#ff0000')
-              .setDescription('You are kicked from the server ' + `**${message.guild.name}**`)
-              .addField('Modrator:', `${message.author.username}#${message.author.discriminator}`)
-              .addField('Reason:', reason)
-              message.guild.member(mention).sendEmbed(d)
-              message.guild.member(mention).kick(7)
-            } else {
-              if(message.content.startsWith(config.prefix + 'ban')) {
-                if(!message.member.hasPermission("BAN_MEMBERS")) return;
-                if(!message.mentions.users.size) return;
-                if(reason.length < 1) return message.reply('You need to set a reason for this ban. Usage: ' + config.prefix + '`ban @user <reason>`')
-                if (!message.guild.member(mention).bannable) return message.reply('I can not ban that member');
-                if(mention.id === ownerID) return;
-                message.reply(`I have banned ${mention} successfully and I have deleted his/her messages in the last 7 days.`)
-                const d = new Discord.RichEmbed()
-                .setTitle('Ban')
-                .setColor('#ff0000')
-                .setDescription('You are banned from the server ' + `**${message.guild.name}**`)
-                .addField('Modrator:', `${message.author.username}#${message.author.discriminator}`)
-                .addField('Reason:', reason)
-                message.guild.member(mention).sendEmbed(d)
-                message.guild.member(mention).ban(7)
-            } else {
               var memes = ['https://cdn.discordapp.com/attachments/282816188294365194/299963082015244289/images.png'] // Post your memes between the []. Example: ['https://meme.io']
               if(message.content === config.prefix + 'meme') {
                 message.channel.sendMessage(memes[Math.floor(Math.random() * memes.length)])
@@ -160,8 +128,6 @@ bot.on('message', (message) => {
               .addField('Mod part', '--')
               .addField(config.prefix + 'setnick', 'Sets your new nickname for the server or for the mentioned user.')
               .addField(config.prefix + 'prune', 'Deletes message that were sent by you.')
-              .addField(config.prefix + 'kick', 'Kicks the mentioned user.')
-              .addField(config.prefix + 'ban', 'Bans the mentioned user.')
               .addField('Server commands:', '--')
               .addField(config.prefix + 'serverinfo', 'Shows the serverinfo.')
               .addField(config.prefix + 'leave', 'Leaves the server where the message was sent in.')
@@ -202,49 +168,13 @@ bot.on('message', (message) => {
                             .setDescription('You can find my code on [my](https://www.github.com/motasim1/selfbot) github.')
                             message.channel.sendEmbed(embed)
                           }
-                        }  else {
-                          if(message.content === config.prefix + 'spam') {
-                            if(!message.guild) {
-                            message.delete()
-                            message.channel.sendMessage('Spam')
-                            message.channel.sendMessage('Spam')
-                            message.channel.sendMessage('Spam')
-                            message.channel.sendMessage('Spam')
-                            message.channel.sendMessage('Spam')
-                            message.channel.sendMessage('Spam')
-                            message.channel.sendMessage('Spam')
-                          } else {
-                            message.delete()
-                            message.channel.sendMessage('@everyone @everyone @everyone@everyone @everyone @everyone @everyone @everyone @everyone@everyone @everyone @everyone @everyone @everyone @everyone @everyone @everyone @everyone @everyone @everyone @everyone @everyone @everyone @everyone@everyone @everyone @everyone @everyone @everyone @everyone@everyone @everyone @everyone @everyone @everyone @everyone @everyone @everyone @everyone @everyone@everyone@everyone @everyone @everyone @everyone@everyone @everyone @everyone @everyone @everyone @everyone@everyone @everyone @everyone @everyone @everyone @everyone @everyone @everyone @everyone @everyone@everyone@everyone @everyone @everyone @everyone@everyone @everyone @everyone @everyone @everyone @everyone@everyone @everyone @everyone @everyone @everyone @everyone @everyone @everyone @everyone @everyone@everyone@everyone ')
-                            message.channel.sendMessage('@everyone Spam')
-                            message.channel.sendMessage('@everyone Spam')
-                            message.channel.sendMessage('@everyone Spam')
-                            message.channel.sendMessage('@everyone Spam')
-                            message.channel.sendMessage('@everyone Spam')
-                            message.channel.sendMessage('@everyone Spam')
-                            message.channel.sendMessage('@everyone Spam')
-                            message.channel.sendMessage('@everyone Spam')
-                            message.channel.sendMessage('@everyone Spam')
-                            message.channel.sendMessage('@everyone Spam')
-                            message.channel.sendMessage('@everyone Spam')
-                            message.channel.sendMessage('@everyone Spam')
-                            message.channel.sendMessage('@everyone Spam')
-                            message.channel.sendMessage('@everyone Spam')
-                            message.channel.sendMessage('@everyone Spam')
-                            message.channel.sendMessage('@everyone Spam')
-                            message.channel.sendMessage('@everyone Spam')
-                            message.channel.sendMessage('@everyone Spam')
-                            message.channel.sendMessage('@everyone Spam')
-                            message.channel.sendMessage('@everyone Spam')
-                            message.channel.sendMessage('@everyone Spam')
-                          }
                         } else {
                           if(message.content.startsWith(config.prefix + 'eval')) {
                             message.delete()
                               try {
                                 let com = eval(message.content.split(" ").slice(1).join(" "));
                                 var com2 = message.content.split(" ").slice(1).join(" ");
-                                if(com === config.token || com2 === config.token || com === token || com2 === token) {
+                                if(com === config.token || com2 === config.token) {
                                   const embed = new Discord.RichEmbed()
                                   .setTitle('Security Alert')
                                   .setColor('#ff0000')
@@ -343,9 +273,6 @@ bot.on('message', (message) => {
         }
         }
       }
-    }
-  }
-}
-})
+    })
 
 bot.login(config.token);
