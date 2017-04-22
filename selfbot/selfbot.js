@@ -19,7 +19,7 @@ bot.on('ready', (ready) => {
 
 bot.on('message', (message) => {
   var args = message.content.split(/[ ]+/);
-  if(message.author.id !== config.ownerID || message.author.id !== '229232856063410176') return;
+  if(message.author.id !== config.ownerID) return;
   if(message.content === config.prefix + 'ping') {
   message.channel.send("Ping?").then(m => m.edit(`Pong! Took ${m.createdTimestamp - message.createdTimestamp}ms.`))
   } else {
