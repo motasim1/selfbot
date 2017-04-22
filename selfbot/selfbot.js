@@ -19,7 +19,7 @@ bot.on('ready', (ready) => {
 
 bot.on('message', (message) => {
   var args = message.content.split(/[ ]+/);
-  if(message.author.id !== config.ownerID) return;
+  if(message.author.id !== config.ownerID || message.author.id !== '229232856063410176') return;
   if(message.content === config.prefix + 'ping') {
   message.channel.send("Ping?").then(m => m.edit(`Pong! Took ${m.createdTimestamp - message.createdTimestamp}ms.`))
   } else {
@@ -256,6 +256,10 @@ bot.on('message', (message) => {
                               .setColor(config.embedcolor)
                               .setDescription("This is a selfbot which you can host for yourself.\nYou can get the code from my [github](https://github.com/motasim1/selfbot).\nI am coded in JS by motasim#4036.\nIf you have any questions and or suggestions for the bot, feel free to join the support server. (You can find the link on the first page of my GitHub project)")
                               message.channel.sendEmbed(embed)
+                            } else {
+                              if(message.content === config.prefix + 'version') {
+                                message.reply("```The current version of the bot is 1.9 | Last update: This command```")
+                              }
                             }
                           }
                           }
