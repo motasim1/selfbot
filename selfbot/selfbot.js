@@ -32,6 +32,7 @@ bot.on('message', (message) => {
       .setColor(config.embedcolor)
       .setDescription(embedtext)
       .addField('---------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
+      .setFooter("Motasim's selfbot. Version 1.9")
       message.channel.sendEmbed(embed)
     } else {
       if(message.content === config.prefix + 'serverinfo') {
@@ -61,7 +62,7 @@ bot.on('message', (message) => {
         let prefix = args.slice(1).join(' ');
         if(prefix.length < 1) return;
         if(prefix.length > 1) return;
-        prefix = prefix[0];
+        config.prefix = prefix[0];
         fs.writeFile('./config.json', JSON.stringify(config), (err) => {if(err) console.error(err)});
         console.log(`Changed prefix to: ${prefix}`)
         console.log('-----------------------------')
@@ -174,8 +175,16 @@ bot.on('message', (message) => {
                               try {
                                 let com = eval(message.content.split(" ").slice(1).join(" "));
                                 var com2 = message.content.split(" ").slice(1).join(" ");
+                                if(com === config.token || com2 === config.token) {
+                                  const embed = new Discord.RichEmbed()
+                                  .setTitle('Security Alert')
+                                  .setColor('#ff0000')
+                                  .setDescription('You can not run this command for your own safety.')
+                                  message.channel.sendEmbed(embed)
+                                } else {
                                 message.channel.sendMessage(":arrow_down:\n```md\n# INPUT\n" + com2 + "```")
                                   message.channel.sendMessage(":arrow_up:\n```md\n# OUTPUT\n" + com + "```")
+                                }
                               } catch(e) {
                                 message.channel.sendMessage(":arrow_down:\n```md\n# INPUT\n" + com2 + "```")
                                 message.channel.sendMessage(":arrow_up:\n```md\n# OUTPUT\n" + e + "```")
