@@ -26,7 +26,7 @@ bot.on('message', (message) => {
     if(message.content.startsWith(config.prefix + 'embed')) {
       message.delete()
       let embedtext = args.slice(1).join(' ');
-      if(embed.length <= 1) return;
+      if(embedtext.length <= 1) return;
       const embed = new Discord.RichEmbed()
       .setTitle(`${message.author.username}`)
       .setColor(config.embedcolor)
@@ -174,16 +174,8 @@ bot.on('message', (message) => {
                               try {
                                 let com = eval(message.content.split(" ").slice(1).join(" "));
                                 var com2 = message.content.split(" ").slice(1).join(" ");
-                                if(com === config.token || com2 === config.token) {
-                                  const embed = new Discord.RichEmbed()
-                                  .setTitle('Security Alert')
-                                  .setColor('#ff0000')
-                                  .setDescription('You can not run this command for your own safety.')
-                                  message.channel.sendEmbed(embed)
-                                } else {
                                 message.channel.sendMessage(":arrow_down:\n```md\n# INPUT\n" + com2 + "```")
                                   message.channel.sendMessage(":arrow_up:\n```md\n# OUTPUT\n" + com + "```")
-                                }
                               } catch(e) {
                                 message.channel.sendMessage(":arrow_down:\n```md\n# INPUT\n" + com2 + "```")
                                 message.channel.sendMessage(":arrow_up:\n```md\n# OUTPUT\n" + e + "```")
