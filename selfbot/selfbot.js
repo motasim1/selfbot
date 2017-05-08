@@ -17,6 +17,8 @@ bot.on('ready', (ready) => {
   console.log('---------------------------------------------------------------------')
 })
 
+var copyright = "Created by motasim#4036."
+
 bot.on('message', (message) => {
   var args = message.content.split(/[ ]+/);
   if(message.author.id !== config.ownerID) return;
@@ -31,32 +33,32 @@ bot.on('message', (message) => {
       .setTitle(`${message.author.username}`)
       .setColor(config.embedcolor)
       .setDescription(embedtext)
-      .addField('---------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
-      .setFooter("Motasim's selfbot. Version 1.9")
-      message.channel.sendEmbed(embed)
+      .setThumbnail(message.author.avatarURL)
+      .setFooter(copyright)
+      message.channel.send({embed: embed})
     } else {
       if(message.content === config.prefix + 'serverinfo') {
         if(!message.guild) return;
-        let n = message.guild.channels.map(r => r.name)
         const embed = new Discord.RichEmbed()
         .setColor(config.embedcolor)
         .addField('Server name:', `**${message.guild.name}**`)
+        .setThumbnail(message.guild.iconURL)
         .addField('Default Channel:', `${message.guild.defaultChannel} (#${message.guild.defaultChannel.name})`)
         .addField('Members:', `**${message.guild.memberCount}**`)
         .addField('Owner:', `${message.guild.owner} (${message.guild.owner.user.username}#${message.guild.owner.user.discriminator})`)
         .addField('Server ID:', `${message.guild.id}`)
-        .addField('Channels:', `${n}`)
-        .addField('---------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
-        message.channel.sendEmbed(embed)
+        .setFooter(copyright)
+        message.channel.send({embed: embed})
     } else {
       if(message.content === config.prefix + 'servers') {
         message.delete()
         const embed = new Discord.RichEmbed()
         .setTitle('Servers')
+        .setThumbnail(message.author.avatarURL)
         .setDescription(`I am now in ${bot.guilds.size} servers.`)
         .setColor(config.embedcolor)
-        .addField('---------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
-        message.channel.sendEmbed(embed)
+        .setFooter(copyright)
+        message.channel.send({embed: embed})
     } else {
       if(message.content.startsWith(config.prefix + 'setprefix')) {
         let prefix = args.slice(1).join(' ');
@@ -78,8 +80,9 @@ bot.on('message', (message) => {
           });
         } else {
           if(message.content.startsWith(config.prefix + 'setgame')) {
-            let game = args.slice(1).join(' ');
-          bot.user.setGame(game);
+            let i = args.slice(1).join(" ")
+            if(i === "null") return bot.user.setGame(null)
+          bot.user.setGame(args.join(" ").substring(8));
         } else {
           if(message.content.startsWith(config.prefix + 'setnick')) {
             if(!message.guild) return;
@@ -93,14 +96,26 @@ bot.on('message', (message) => {
             } else {
             if(!message.member.hasPermission("CHANGE_NICKNAME")) return console.log(`You can not change your nickname on the server ${message.guild.name} because you do not have the right perms.`)
             var nickname = args.slice(1).join(' ');
-            if(nickname === 'null') return message.member.setNickname(null).then(console.log(`Setted your nickname on the server **${message.guild.name}** back to ${bot.user.username}`))
-            message.member.setNickname(nickname);
+            if(nickname === 'null') {
+              message.member.setNickname(null)
+              console.log(`Setted your nickname on the server **${message.guild.name}** back to ${bot.user.username}`)
+              const e = new Discord.RichEmbed()
+              .setTitle("Nickname")
+              .setThumbnail(message.author.avatarURL)
+              .setDescription("Successfully changed your nickname to " + message.author.username)
+              .setFooter(copyright)
+              message.channel.send({embed: e})
+            } else {
+            message.member.setNickname(nickname)
+              const e = new Discord.RichEmbed()
+              .setTitle("Nickname")
+              .setThumbnail(message.author.avatarURL)
+              .setDescription("Successfully changed your nickname to " + nickname)
+              .setFooter(copyright)
+              message.channel.send({embed: e})
             console.log(`Changed nickname on the server **${message.guild.name}** to **${nickname}**`)
+          }
             message.delete().catch(console.error);
-            const embed = new Discord.RichEmbed()
-            .setTitle('Nickname change')
-            .setDescription(`Changed my new nickname to: ${nickname}`)
-            .addField('---------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
           }
           } else {
             let ownerID = config.ownerID
@@ -109,7 +124,7 @@ bot.on('message', (message) => {
             let reason = args.slice(2).join(' ');
               var memes = ['https://cdn.discordapp.com/attachments/282816188294365194/299963082015244289/images.png'] // Post your memes between the []. Example: ['https://meme.io']
               if(message.content === config.prefix + 'meme') {
-                message.channel.sendMessage(memes[Math.floor(Math.random() * memes.length)])
+                message.channel.send(memes[Math.floor(Math.random() * memes.length)])
           } else {
             if(message.content === config.prefix + 'help') {
               const embed = new Discord.RichEmbed()
@@ -133,15 +148,15 @@ bot.on('message', (message) => {
               .addField(config.prefix + 'serverinfo', 'Shows the serverinfo.')
               .addField(config.prefix + 'leave', 'Leaves the server where the message was sent in.')
               .addField(config.prefix + 'perms', 'Shows the permissions for you in a server.')
-              .addField('---------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
-              message.channel.sendEmbed(embed)
+              .setFooter(copyright)
+              message.channel.send({embed: embed})
             } else {
               if(message.content.startsWith('What is my prefix?')) {
                 message.reply(`Your prefix is: ${config.prefix}`)
               } else {
                 if(message.content === config.prefix + 'chat') {
                   message.delete()
-                  message.channel.sendMessage('Chat is dead\nWould you like to bring it alive?\n[Yes] [No]')
+                  message.channel.send('Chat is dead\nWould you like to bring it alive?\n[Yes] [No]')
                 } else {
                   if(message.content === config.prefix + 'leave') {
                     if(!message.guild) return;
@@ -152,7 +167,7 @@ bot.on('message', (message) => {
                       if(message.content.startsWith(config.prefix + 'insult')) {
                         if(!message.mentions.users.size) return;
                         var insults = ['Is your ass jealous of the amount of shit that just came out of your mouth?', 'Two wrongs dont make a right, take your parents as an example.', 'Id like to see things from your point of view but I cant seem to get my head that far up my ass.', 'If I wanted to kill myself Id climb your ego and jump to your IQ.', 'Your family tree must be a cactus because everybody on it is a prick.', 'You are so ugly, when your mom dropped you off at school she got a fine for littering.', 'Your birth certificate is an apology letter from the condom factory.']
-                        message.channel.sendMessage(insults[Math.floor(Math.random() * insults.length)])
+                        message.channel.send(insults[Math.floor(Math.random() * insults.length)])
                         console.log(`Runned ${config.prefix}insult on the server **${message.guild.name}**`)
                       } else {
                         if(message.content.startsWith(config.prefix + 'github')) {
@@ -160,13 +175,13 @@ bot.on('message', (message) => {
                             const embed = new Discord.RichEmbed()
                             .setTitle('GitHub')
                             .setDescription('You can find my code on [my](https://www.github.com/motasim1/selfbot) github.')
-                            message.channel.sendMessage(`${mention}:`)
-                            message.channel.sendEmbed(embed)
+                            message.channel.send(`${mention}:`)
+                            message.channel.send({embed: embed})
                           } else {
                             const embed = new Discord.RichEmbed()
                             .setTitle('GitHub')
                             .setDescription('You can find my code on [my](https://www.github.com/motasim1/selfbot) github.')
-                            message.channel.sendEmbed(embed)
+                            message.channel.send({embed: embed})
                           }
                         } else {
                           if(message.content.startsWith(config.prefix + 'eval')) {
@@ -179,14 +194,14 @@ bot.on('message', (message) => {
                                   .setTitle('Security Alert')
                                   .setColor('#ff0000')
                                   .setDescription('You can not run this command for your own safety.')
-                                  message.channel.sendEmbed(embed)
+                                  message.channel.send({embed: embed})
                                 } else {
-                                message.channel.sendMessage(":arrow_down:\n```md\n# INPUT\n" + com2 + "```")
-                                  message.channel.sendMessage(":arrow_up:\n```md\n# OUTPUT\n" + com + "```")
+                                message.channel.send(":arrow_down:\n```md\n# INPUT\n" + com2 + "```")
+                                  message.channel.send(":arrow_up:\n```md\n# OUTPUT\n" + com + "```")
                                 }
                               } catch(e) {
-                                message.channel.sendMessage(":arrow_down:\n```md\n# INPUT\n" + com2 + "```")
-                                message.channel.sendMessage(":arrow_up:\n```md\n# OUTPUT\n" + e + "```")
+                                message.channel.send(":arrow_down:\n```md\n# INPUT\n" + com2 + "```")
+                                message.channel.send(":arrow_up:\n```md\n# OUTPUT\n" + e + "```")
                               }
                           } else {
                             if(message.content === config.prefix + 'perms') {
@@ -245,8 +260,8 @@ bot.on('message', (message) => {
                               } else {
                                 embed.addField("Change nickname:", no)
                               }
-                              embed.addField('---------------------------------------------', "Made possible by Motasim's [selfbot](https://github.com/motasim1/selfbot)")
-                              message.channel.sendEmbed(embed)
+                              embed.setFooter(copyright)
+                              message.channel.send({embed: embed})
                             }
                           } else {
                             if(message.content === config.prefix + 'info') {
@@ -254,7 +269,7 @@ bot.on('message', (message) => {
                               .setTitle("Selfbot Info")
                               .setColor(config.embedcolor)
                               .setDescription("This is a selfbot which you can host for yourself.\nYou can get the code from my [github](https://github.com/motasim1/selfbot).\nI am coded in JS by motasim#4036.\nIf you have any questions and or suggestions for the bot, feel free to join the support server. (You can find the link on the first page of my GitHub project)")
-                              message.channel.sendEmbed(embed)
+                              message.channel.send({embed: embed})
                             } else {
                               if(message.content === config.prefix + 'version') {
                                 message.reply("```The current version of the bot is 1.9 | Last update: This command```")
