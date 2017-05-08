@@ -2,5 +2,5 @@
   "ownerID" : "Your User ID here.",
   "prefix" : "!",
   "token" : "Your token here.",
-  "embedcolor" : "#00ffdd . **You can get a new color when searching on Google: html color picker**"
+  "embedcolor" : "#00ffdd"
 }
