@@ -11,9 +11,9 @@ function clean(text) {
 }
 
 bot.on('ready', (ready) => {
-  console.log('Self bot is online! Prefix:' + config.prefix)
-  console.log('Logged in as:' + bot.user.username + '#' + bot.user.discriminator)
-  console.log('Use:' + config.prefix + 'help')
+  console.log('Self bot is online! Prefix: ' + config.prefix)
+  console.log('Logged in as: ' + bot.user.username + '#' + bot.user.discriminator)
+  console.log('Use: ' + config.prefix + 'help')
   console.log('---------------------------------------------------------------------')
 })
 
@@ -119,7 +119,6 @@ bot.on('message', (message) => {
           }
           } else {
             let ownerID = config.ownerID
-            // Moderation part. Works only with role perms
             let mention = message.mentions.users.first()
             let reason = args.slice(2).join(' ');
               var memes = ['https://cdn.discordapp.com/attachments/282816188294365194/299963082015244289/images.png'] // Post your memes between the []. Example: ['https://meme.io']
