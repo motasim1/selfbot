@@ -4,3 +4,18 @@
   "token" : "Your token here.",
   "embedcolor" : "#00ffdd"
 }
+/*
+
+      This is your config file which will be used to get data from it for your selfbot. 
+      
+      Please paste your user ID where it says: ownerID : "Your User ID here"
+      
+      You can use the default prefix which you will need for the commands or you can change it here.
+      
+      Your token is a kind of code which will let your selfbot login to your account. Never post your token in a chat
+      
+      You can have a primair embed color that will be used for the embeds or you can have random colors. An embed color
+      code should look something like this: #00ffdd
+      If you want random colors, do in your embed color: random
+
+*/
