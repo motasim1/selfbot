@@ -1,3 +1,17 @@
+/*
+        ---------------------------------------------------------------------------
+        |Disclaimer:                                                               |
+        |This selfbot is created by motasim#4036 for Discord.                      |
+        |Please do NOT change the code unless you know what you are doing.         |
+        |If you fuck up the code, you will need to restore it back for yourself.   |
+        |I am not responsible for anything you do that can lead to account hacking.|
+        |                                                                          |
+        |                                                                          |
+        |                 © 2017 | motasim#4036's selfbot.                         |
+        ----------------------------------------------------------------------------
+
+*/
+
 const Discord = require('discord.js')
 const bot = new Discord.Client()
 const config = require('./config.json')
@@ -19,6 +33,8 @@ bot.on('ready', (ready) => {
 
 var copyright = "Created by motasim#4036."
 
+var embedtitle = []
+
 bot.on('message', (message) => {
   var args = message.content.split(/[ ]+/);
   if(message.author.id !== config.ownerID) return;
@@ -30,9 +46,17 @@ bot.on('message', (message) => {
       let embedtext = args.slice(1).join(' ');
       if(embedtext.length <= 1) return;
       const embed = new Discord.RichEmbed()
-      .setTitle(`${message.author.username}`)
-      .setColor(config.embedcolor)
-      .setDescription(embedtext)
+      if(config.embedcolor === "random") {
+        embed.setColor("RANDOM")
+      } else {
+      embed.setColor(config.embedcolor)
+      }
+      if(embedtitle.length < 1) {
+        embed.setTitle(`${message.author.username}`)
+      } else {
+        embed.setTitle(embedtitle)
+      }
+      embed.setDescription(embedtext)
       .setThumbnail(message.author.avatarURL)
       .setFooter(copyright)
       message.channel.send({embed: embed})
@@ -40,8 +64,12 @@ bot.on('message', (message) => {
       if(message.content === config.prefix + 'serverinfo') {
         if(!message.guild) return;
         const embed = new Discord.RichEmbed()
-        .setColor(config.embedcolor)
-        .addField('Server name:', `**${message.guild.name}**`)
+        if(config.embedcolor === "random") {
+          embed.setColor("RANDOM")
+        } else {
+        embed.setColor(config.embedcolor)
+        }
+        embed.addField('Server name:', `**${message.guild.name}**`)
         .setThumbnail(message.guild.iconURL)
         .addField('Default Channel:', `${message.guild.defaultChannel} (#${message.guild.defaultChannel.name})`)
         .addField('Members:', `**${message.guild.memberCount}**`)
@@ -56,8 +84,12 @@ bot.on('message', (message) => {
         .setTitle('Servers')
         .setThumbnail(message.author.avatarURL)
         .setDescription(`I am now in ${bot.guilds.size} servers.`)
-        .setColor(config.embedcolor)
-        .setFooter(copyright)
+        if(config.embedcolor === "random") {
+          embed.setColor("RANDOM")
+        } else {
+        embed.setColor(config.embedcolor)
+        }
+        embed.setFooter(copyright)
         message.channel.send({embed: embed})
     } else {
       if(message.content.startsWith(config.prefix + 'setprefix')) {
@@ -82,7 +114,7 @@ bot.on('message', (message) => {
           if(message.content.startsWith(config.prefix + 'setgame')) {
             let i = args.slice(1).join(" ")
             if(i === "null") return bot.user.setGame(null)
-          bot.user.setGame(args.join(" ").substring(8));
+          bot.user.setGame(args.join(" "));
         } else {
           if(message.content.startsWith(config.prefix + 'setnick')) {
             if(!message.guild) return;
@@ -102,7 +134,12 @@ bot.on('message', (message) => {
               const e = new Discord.RichEmbed()
               .setTitle("Nickname")
               .setThumbnail(message.author.avatarURL)
-              .setDescription("Successfully changed your nickname to " + message.author.username)
+              if(config.embedcolor === "random") {
+                e.setColor("RANDOM")
+              } else {
+              e.setColor(config.embedcolor)
+              }
+              embed.setDescription("Successfully changed your nickname to " + message.author.username)
               .setFooter(copyright)
               message.channel.send({embed: e})
             } else {
@@ -110,7 +147,12 @@ bot.on('message', (message) => {
               const e = new Discord.RichEmbed()
               .setTitle("Nickname")
               .setThumbnail(message.author.avatarURL)
-              .setDescription("Successfully changed your nickname to " + nickname)
+              if(config.embedcolor === "random") {
+                e.setColor("RANDOM")
+              } else {
+              e.setColor(config.embedcolor)
+              }
+              embed.setDescription("Successfully changed your nickname to " + nickname)
               .setFooter(copyright)
               message.channel.send({embed: e})
             console.log(`Changed nickname on the server **${message.guild.name}** to **${nickname}**`)
@@ -128,8 +170,12 @@ bot.on('message', (message) => {
             if(message.content === config.prefix + 'help') {
               const embed = new Discord.RichEmbed()
               .setTitle('Selfbot Help')
-              .setColor(config.embedcolor)
-              .addField(config.prefix + 'help', 'Shows this help message.')
+              if(config.embedcolor === "random") {
+                embed.setColor("RANDOM")
+              } else {
+              embed.setColor(config.embedcolor)
+              }
+              embed.addField(config.prefix + 'help', 'Shows this help message.')
               .addField(config.prefix + 'info', 'Shows the bot info.')
               .addField(config.prefix + 'insult', 'Insults the mentioned user.')
               .addField(config.prefix + 'ping', 'Returns "pong" with how long it took to respond')
@@ -138,6 +184,7 @@ bot.on('message', (message) => {
               .addField(config.prefix + 'setgame', 'Sets your playing game.')
               .addField(config.prefix + 'chat', 'Use this when the chat is dead.')
               .addField(config.prefix + 'setprefix', 'Sets your new prefix.')
+              .addField(config.prefix + 'setetitle', 'Sets the title for your embeds.')
               .addField(config.prefix + 'servers', 'Shows in how many servers you are in.')
               .addField(config.prefix + 'meme', 'Post a random meme.')
               .addField('Mod part', '--')
@@ -167,19 +214,28 @@ bot.on('message', (message) => {
                         if(!message.mentions.users.size) return;
                         var insults = ['Is your ass jealous of the amount of shit that just came out of your mouth?', 'Two wrongs dont make a right, take your parents as an example.', 'Id like to see things from your point of view but I cant seem to get my head that far up my ass.', 'If I wanted to kill myself Id climb your ego and jump to your IQ.', 'Your family tree must be a cactus because everybody on it is a prick.', 'You are so ugly, when your mom dropped you off at school she got a fine for littering.', 'Your birth certificate is an apology letter from the condom factory.']
                         message.channel.send(insults[Math.floor(Math.random() * insults.length)])
-                        console.log(`Runned ${config.prefix}insult on the server **${message.guild.name}**`)
                       } else {
                         if(message.content.startsWith(config.prefix + 'github')) {
                           if(message.mentions.users.size) {
                             const embed = new Discord.RichEmbed()
                             .setTitle('GitHub')
                             .setDescription('You can find my code on [my](https://www.github.com/motasim1/selfbot) github.')
+                            if(config.embedcolor === "random") {
+                              embed.setColor("RANDOM")
+                            } else {
+                            embed.setColor(config.embedcolor)
+                            }
                             message.channel.send(`${mention}:`)
                             message.channel.send({embed: embed})
                           } else {
                             const embed = new Discord.RichEmbed()
                             .setTitle('GitHub')
                             .setDescription('You can find my code on [my](https://www.github.com/motasim1/selfbot) github.')
+                            if(config.embedcolor === "random") {
+                              embed.setColor("RANDOM")
+                            } else {
+                            embed.setColor(config.embedcolor)
+                            }
                             message.channel.send({embed: embed})
                           }
                         } else {
@@ -210,7 +266,11 @@ bot.on('message', (message) => {
                               if(message.author.id === message.guild.owner.id) return message.reply('You are the server owner so you have full perms!')
                               if(!message.member.hasPermission("EMBED_LINKS")) return message.reply("You can not post embeds in this channel/server. Please try again in an other channel or take contact with one of the Admins of the server.")
                               const embed = new Discord.RichEmbed()
-                              .setColor(config.embedcolor)
+                              if(config.embedcolor === "random") {
+                                embed.setColor("RANDOM")
+                              } else {
+                              embed.setColor(config.embedcolor)
+                              }
                               if(message.member.hasPermission("ADMINISTRATOR")) {
                                 message.reply("You have full perms.")
                               } else {
@@ -266,12 +326,24 @@ bot.on('message', (message) => {
                             if(message.content === config.prefix + 'info') {
                               const embed = new Discord.RichEmbed()
                               .setTitle("Selfbot Info")
-                              .setColor(config.embedcolor)
-                              .setDescription("This is a selfbot which you can host for yourself.\nYou can get the code from my [github](https://github.com/motasim1/selfbot).\nI am coded in JS by motasim#4036.\nIf you have any questions and or suggestions for the bot, feel free to join the support server. (You can find the link on the first page of my GitHub project)")
+                              if(config.embedcolor === "random") {
+                                embed.setColor("RANDOM")
+                              } else {
+                              embed.setColor(config.embedcolor)
+                              }
+                              embed.setDescription("This is a selfbot which you can host for yourself.\nYou can get the code from my [github](https://github.com/motasim1/selfbot).\nI am coded in JS by motasim#4036.\nIf you have any questions and or suggestions for the bot, feel free to join the support server. (You can find the link on the first page of my GitHub project)")
                               message.channel.send({embed: embed})
                             } else {
                               if(message.content === config.prefix + 'version') {
-                                message.reply("```The current version of the bot is 1.9 | Last update: This command```")
+                                message.reply("```The current version of the bot is 1.9 | Last update: Custom embed titles```")
+                              } else {
+                                if(message.content.startsWith(config.prefix + "setetitle")) {
+                                  let title = args.slice(1).join(" ")
+                                  if(title.length < 1) return message.reply("Please provide a title for the Embed.")
+                                  embedtitle.shift()
+                                  embedtitle.push(title)
+                                  message.reply("Ok. Your new embed title is `" + title + "`. Please note that you need to set this back after a re-boot.")
+                                }
                               }
                             }
                           }
