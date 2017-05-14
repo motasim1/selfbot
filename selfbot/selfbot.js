@@ -190,6 +190,8 @@ bot.on('message', (message) => {
               .addField('Mod part', '--')
               .addField(config.prefix + 'setnick', 'Sets your new nickname for the server or for the mentioned user.')
               .addField(config.prefix + 'prune', 'Deletes message that were sent by you.')
+              .addField(config.prefix + 'kick', "Kicks the mentioned user.")
+              .addField(config.prefix + 'ban', "Bans the mentioned user.")
               .addField('Server commands:', '--')
               .addField(config.prefix + 'serverinfo', 'Shows the serverinfo.')
               .addField(config.prefix + 'leave', 'Leaves the server where the message was sent in.')
@@ -212,8 +214,10 @@ bot.on('message', (message) => {
                   } else {
                       if(message.content.startsWith(config.prefix + 'insult')) {
                         if(!message.mentions.users.size) return;
+                        message.delete()
+                        let mention = message.mentions.users.first()
                         var insults = ['Is your ass jealous of the amount of shit that just came out of your mouth?', 'Two wrongs dont make a right, take your parents as an example.', 'Id like to see things from your point of view but I cant seem to get my head that far up my ass.', 'If I wanted to kill myself Id climb your ego and jump to your IQ.', 'Your family tree must be a cactus because everybody on it is a prick.', 'You are so ugly, when your mom dropped you off at school she got a fine for littering.', 'Your birth certificate is an apology letter from the condom factory.']
-                        message.channel.send(insults[Math.floor(Math.random() * insults.length)])
+                        message.channel.send(mention + " " + insults[Math.floor(Math.random() * insults.length)])
                       } else {
                         if(message.content.startsWith(config.prefix + 'github')) {
                           if(message.mentions.users.size) {
@@ -244,16 +248,8 @@ bot.on('message', (message) => {
                               try {
                                 let com = eval(message.content.split(" ").slice(1).join(" "));
                                 var com2 = message.content.split(" ").slice(1).join(" ");
-                                if(com === config.token || com2 === config.token) {
-                                  const embed = new Discord.RichEmbed()
-                                  .setTitle('Security Alert')
-                                  .setColor('#ff0000')
-                                  .setDescription('You can not run this command for your own safety.')
-                                  message.channel.send({embed: embed})
-                                } else {
                                 message.channel.send(":arrow_down:\n```md\n# INPUT\n" + com2 + "```")
                                   message.channel.send(":arrow_up:\n```md\n# OUTPUT\n" + com + "```")
-                                }
                               } catch(e) {
                                 message.channel.send(":arrow_down:\n```md\n# INPUT\n" + com2 + "```")
                                 message.channel.send(":arrow_up:\n```md\n# OUTPUT\n" + e + "```")
@@ -343,6 +339,62 @@ bot.on('message', (message) => {
                                   embedtitle.shift()
                                   embedtitle.push(title)
                                   message.reply("Ok. Your new embed title is `" + title + "`. Please note that you need to set this back after a re-boot.")
+                                } else {
+                                  if(message.content.startsWith(config.prefix + "kick")) {
+                                    if(!message.guild) return;
+                                    let mention = message.mentions.users.first()
+                                    let reason = args.slice(2).join(" ")
+                                    if(!message.guild.member(bot.user).hasPermission("KICK_MEMBERS")) return message.channel.send("```You do not have the Kick Members permission.```")
+                                    if(!message.mentions.users.size) return message.channel.send("```Please mention someone to kick```")
+                                    if(reason.length < 2) return message.channel.send("```Please provide a reason for this kick```")
+                                    if(!message.guild.member(mention).kickable) return message.channel.send("```You can not kick a member who has a higher role than you or who has the same role as you.```")
+                                    const embed = new Discord.RichEmbed()
+                                    .setTitle("Kick")
+                                    .setColor("#ff0000")
+                                    .addField("User:", `${mention.username}#${mention.discriminator}`)
+                                    .addField("Moderator:", message.author.tag)
+                                    .addField("Reason:", reason)
+                                    message.guild.defaultChannel.send({embed: embed})
+                                    const embedd = new Discord.RichEmbed()
+                                    .setTitle("Kick")
+                                    .setDescription("You are kicked from the server **" + message.guild.name + "**")
+                                    .setColor("#ff0000")
+                                    .addField("Moderator:", message.author.tag)
+                                    .addField("Reason:", reason)
+                                    message.guild.member(mention).send({embed: embedd})
+                                    bot.setTimeout(() => {
+                                      message.guild.member(mention).kick(7)
+                                      message.channel.send("Successfully kicked **" + mention.username + "#" + mention.discriminator + "**")
+                                    }, 1000)
+                                  } else {
+                                    if(message.content.startsWith(config.prefix + "ban")) {
+                                      if(!message.guild) return;
+                                      let mention = message.mentions.users.first()
+                                      let reason = args.slice(2).join(" ")
+                                      if(!message.guild.member(bot.user).hasPermission("BAN_MEMBERS")) return message.channel.send("```You do not have the Kick Members permission.```")
+                                      if(!message.mentions.users.size) return message.channel.send("```Please mention someone to ban```")
+                                      if(reason.length < 2) return message.channel.send("```Please provide a reason for this ban```")
+                                      if(!message.guild.member(mention).kickable) return message.channel.send("```You can not ban a member who has a higher role than you or who has the same role as you.```")
+                                      const embed = new Discord.RichEmbed()
+                                      .setTitle("Ban")
+                                      .setColor("#ff0000")
+                                      .addField("User:", `${mention.username}#${mention.discriminator}`)
+                                      .addField("Moderator:", message.author.tag)
+                                      .addField("Reason:", reason)
+                                      message.guild.defaultChannel.send({embed: embed})
+                                      const embedd = new Discord.RichEmbed()
+                                      .setTitle("Ban")
+                                      .setDescription("You are banned from the server **" + message.guild.name + "**")
+                                      .setColor("#ff0000")
+                                      .addField("Moderator:", message.author.tag)
+                                      .addField("Reason:", reason)
+                                      message.guild.member(mention).send({embed: embedd})
+                                      bot.setTimeout(() => {
+                                        message.guild.member(mention).ban(7)
+                                        message.channel.send("Successfully banned **" + mention.username + "#" + mention.discriminator + "**")
+                                      }, 1000)
+                                    }
+                                  }
                                 }
                               }
                             }
