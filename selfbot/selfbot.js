@@ -35,9 +35,6 @@ var copyright = "Created by motasim#4036."
 
 var embedtitle = []
 
-var afk
-
-
 bot.on('message', (message) => {
   var args = message.content.split(/[ ]+/);
   if(message.author.id !== bot.user.id) return;
@@ -397,7 +394,7 @@ bot.on('message', (message) => {
                                         message.channel.send("Successfully banned **" + mention.username + "#" + mention.discriminator + "**")
                                       }, 1000)
                                     } else {
-                                      if(message.content === config.prefix + "afk") {
+                                      if(message.content.startsWith(config.prefix + "afk")) {
                                         if(config.afk === "false") {
                                           config.afk = "true"
                                           message.reply("You are now AFK.")
