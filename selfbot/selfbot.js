@@ -4,7 +4,7 @@
         |This selfbot is created by motasim#4036 for Discord.                      |
         |Please do NOT change the code unless you know what you are doing.         |
         |If you fuck up the code, you will need to restore it back for yourself.   |
-        |I am not responsible for anything you do that can lead to account hacking.|
+        |I am not responsible for anything you do that can bring you in trouble.   |
         |                                                                          |
         |                                                                          |
         |                 © 2017 | motasim#4036's selfbot.                         |
@@ -35,9 +35,12 @@ var copyright = "Created by motasim#4036."
 
 var embedtitle = []
 
+var afk
+
+
 bot.on('message', (message) => {
   var args = message.content.split(/[ ]+/);
-  if(message.author.id !== config.ownerID) return;
+  if(message.author.id !== bot.user.id) return;
   if(message.content === config.prefix + 'ping') {
   message.channel.send("Ping?").then(m => m.edit(`Pong! Took ${m.createdTimestamp - message.createdTimestamp}ms.`))
   } else {
@@ -114,7 +117,7 @@ bot.on('message', (message) => {
           if(message.content.startsWith(config.prefix + 'setgame')) {
             let i = args.slice(1).join(" ")
             if(i === "null") return bot.user.setGame(null)
-          bot.user.setGame(args.join(" "));
+          bot.user.setGame(args.join(" ").substring(7));
         } else {
           if(message.content.startsWith(config.prefix + 'setnick')) {
             if(!message.guild) return;
@@ -335,7 +338,7 @@ bot.on('message', (message) => {
                               } else {
                                 if(message.content.startsWith(config.prefix + "setetitle")) {
                                   let title = args.slice(1).join(" ")
-                                  if(title.length < 1) return message.reply("Please provide a title for the Embed.")
+                                  if(title.length < 1) return embedtitle.shift()
                                   embedtitle.shift()
                                   embedtitle.push(title)
                                   message.reply("Ok. Your new embed title is `" + title + "`. Please note that you need to set this back after a re-boot.")
@@ -393,6 +396,20 @@ bot.on('message', (message) => {
                                         message.guild.member(mention).ban(7)
                                         message.channel.send("Successfully banned **" + mention.username + "#" + mention.discriminator + "**")
                                       }, 1000)
+                                    } else {
+                                      if(message.content === config.prefix + "afk") {
+                                        if(config.afk === "false") {
+                                          config.afk = "true"
+                                          message.reply("You are now AFK.")
+                                          fs.writeFile('./config.json', JSON.stringify(config), (err) => {if(err) console.error(err)});
+                                        } else {
+                                        if(config.afk === "true") {
+                                          config.afk = "false"
+                                          message.reply("You are no longer AFK.")
+                                          fs.writeFile('./config.json', JSON.stringify(config), (err) => {if(err) console.error(err)});
+                                        }
+                                      }
+                                    }
                                     }
                                   }
                                 }
@@ -414,6 +431,39 @@ bot.on('message', (message) => {
           }
         }
         }
+      }
+    })
+
+    bot.on("message", message => {
+      if(!message.guild) return;
+      if(message.author.bot) return;
+      if(message.mentions.users.has(bot.user.id)) {
+        if(message.author.id === bot.user.id) return;
+        if(config.afk === "false") return;
+        if(config.afk === "true") {
+          const embed = new Discord.RichEmbed()
+          .setTitle("AFK")
+          if(config.embedcolor === 'random') {
+            embed.setColor("RANDOM")
+          } else {
+            embed.setColor(config.embedcolor)
+          }
+          embed.setDescription("I am AFK. Please DM me later because this mention gets muted due my selfbot.")
+          message.channel.send({embed: embed})
+        }
+        const embed = new Discord.RichEmbed()
+        .setTitle("Mention")
+        if(config.embedcolor === 'random') {
+          embed.setColor("RANDOM")
+        } else {
+          embed.setColor(config.embedcolor)
+        }
+        embed.setDescription("You were mentioned in a server.")
+        .addField("User:", message.author.tag)
+        .addField("Server:", message.guild.name)
+        .addField("Channel:", message.channel)
+        .addField("Content:", message.content)
+        bot.channels.get(config.logchannel).send({embed: embed})
       }
     })
 
