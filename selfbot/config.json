@@ -3,7 +3,7 @@
   "prefix" : "!",
   "token" : "Your token here.",
   "embedcolor" : "#00ffdd",
-  "logchannel" : "Channel ID where the mention logs goes."
+  "logchannel" : "Channel ID where the mention logs goes.",
   "afk" : "false"
 }
 /*
