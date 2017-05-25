@@ -2,7 +2,9 @@
   "ownerID" : "Your User ID here.",
   "prefix" : "!",
   "token" : "Your token here.",
-  "embedcolor" : "#00ffdd"
+  "embedcolor" : "#00ffdd",
+  "logchannel" : "Channel ID where the mention logs goes."
+  "afk" : "false"
 }
 /*
 
@@ -17,5 +19,7 @@
       You can have a primair embed color that will be used for the embeds or you can have random colors. An embed color
       code should look something like this: #00ffdd
       If you want random colors, do in your embed color: random
-
+       
+       
+       Delete these notes to prevent a crash.
 */
